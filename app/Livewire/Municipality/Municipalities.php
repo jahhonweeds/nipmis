@@ -77,6 +77,7 @@ class Municipalities extends Component
             $this->dispatch('show-toast', 'Cannot delete municipality with assigned schools.');
             $this->confirmingDelete = false;
             Flux::modal('municipal-delete-modal')->close();
+            
         }
         else{
         Municipality::destroy($this->deleteId);

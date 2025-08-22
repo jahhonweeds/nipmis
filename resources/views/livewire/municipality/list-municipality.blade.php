@@ -72,5 +72,5 @@
             </tbody>
         </table>
     </div>
-    @include("components.flash-messages")
+    @include("components.flash-message s")
 </div>
