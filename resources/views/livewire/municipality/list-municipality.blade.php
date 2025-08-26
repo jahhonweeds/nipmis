@@ -28,6 +28,7 @@
             </div>
         </form>
     </flux:modal>
+
     <!-- Delete Confirmation Modal -->
     <flux:modal name="municipal-delete-modal" class="md:w-96">
         <div class="p-4">
@@ -37,40 +38,44 @@
             <div class="flex justify-end gap-2 mt-4">
                 <flux:button size="sm" variant="danger" wire:click="deleteConfirmed">Delete</flux:button>
                 <flux:button size="sm" variant="primary" wire:click="resetInput">Cancel</flux:button>
-
             </div>
         </div>
+
     </flux:modal>
 
     <!-- Responsive Table -->
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+        <table class="min-w-full">
+            <thead class="bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-white">
                 <tr>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions
                     </th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @foreach($municipalities as $municipality)
-                <tr>
-                    <td class="px-4 py-2 whitespace-nowrap">{{ $municipality->name }}</td>
-                    <td class="px-4 py-2 whitespace-nowrap flex gap-2">
-                        <flux:modal.trigger name="municipality-modal">
-                            <flux:button type="button" size="sm" wire:click="edit({{ $municipality->id }})"
-                                class="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500">Edit
-                            </flux:button>
-                        </flux:modal.trigger>
-                        <flux:modal.trigger name="municipal-delete-modal">
-                            <flux:button type="button" size="sm" wire:click="confirmDelete({{ $municipality->id }})"
-                                class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</flux:button>
-                        </flux:modal.trigger>
-                    </td>
-                </tr>
+            <tbody class="bg-white dark:bg-gray-800 dark:text-white divide-y divide-gray-200">
+                @foreach ($municipalities as $municipality)
+                    <tr>
+                        <td class="px-4 py-2 whitespace-nowrap">{{ $municipality->id }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap">{{ $municipality->name }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap flex gap-2">
+                            <flux:modal.trigger name="municipality-modal">
+                                <flux:button type="button" size="sm" wire:click="edit({{ $municipality->id }})"
+                                    class="px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500">Edit
+                                </flux:button>
+                            </flux:modal.trigger>
+                            <flux:modal.trigger name="municipal-delete-modal">
+                                <flux:button type="button" size="sm"
+                                    wire:click="confirmDelete({{ $municipality->id }})"
+                                    class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete
+                                </flux:button>
+                            </flux:modal.trigger>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-    @include("components.flash-message s")
+    {{-- <x-toaster-hub /> --}}
 </div>

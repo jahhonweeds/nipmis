@@ -5,7 +5,10 @@ namespace App\Livewire\Municipality;
 use Flux\Flux;
 use Livewire\Component;
 use App\Models\Municipality;
+use Masmerise\Toaster\Toaster;
 use App\Helpers\Flash; // Assuming you have a Flash helper for session messages
+
+use function Laravel\Prompts\alert;
 
 class Municipalities extends Component
 {
@@ -14,7 +17,7 @@ class Municipalities extends Component
     public $isEdit = false;
     public $showModal = false;
     public $confirmingDelete = false;
-    public $deleteId = null; 
+    public $deleteId = null;
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -22,7 +25,7 @@ class Municipalities extends Component
 
     public function render()
     {
-        
+
         $this->municipalities = Municipality::all();
         return view('livewire.municipality.list-municipality');
     }
@@ -42,6 +45,7 @@ class Municipalities extends Component
         Municipality::create(['name' => $this->name]);
         $this->resetInput();
         Flux::modal('municipality-modal')->close(); // Removed due to undefined class
+        Toaster::success('Municipality created!');
     }
 
     public function edit($id)
@@ -55,6 +59,7 @@ class Municipalities extends Component
     public function update()
     {
         $this->validate();
+        Toaster::success('Municipality updated!');
         Municipality::find($this->municipality_id)->update(['name' => $this->name]);
         $this->resetInput();
         Flux::modal('municipality-modal')->close();
@@ -74,15 +79,15 @@ class Municipalities extends Component
         // Check if the municipality has any schools
         $schools = \App\Models\School::where('municipality_id', $this->deleteId)->exists();
         if ($schools) {
-            $this->dispatch('show-toast', 'Cannot delete municipality with assigned schools.');
+            Toaster::error('Cannot delete municipality with associated schools!');
             $this->confirmingDelete = false;
             Flux::modal('municipal-delete-modal')->close();
-            
-        }
-        else{
-        Municipality::destroy($this->deleteId);
-        $this->resetInput();
-        Flux::modal('municipal-delete-modal')->close();
+            // return redirect()->to('/municipalities');
+        } else {
+            Municipality::destroy($this->deleteId);
+            $this->resetInput();
+            Flux::modal('municipal-delete-modal')->close();
+            Toaster::success('Municipality deleted successfully!');
         }
     }
 }

@@ -26,6 +26,8 @@ class User extends Authenticatable
         'position',
         'email',
         'password',
+        'municipality_id',
+        'position'
     ];
 
     /**
@@ -59,7 +61,21 @@ class User extends Authenticatable
         return Str::of($this->firstname)
             ->explode(' ')
             ->take(1)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->lastname}, {$this->firstname} " . ($this->middlename ? "{$this->middlename} " : '') . ($this->suffix ? "{$this->suffix}" : '');
+    }
+    public function isAdmin(): bool
+    {
+        return $this->position === 'Admin';
+    }
+
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
     }
 }

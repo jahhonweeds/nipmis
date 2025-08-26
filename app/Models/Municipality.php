@@ -17,4 +17,9 @@ class Municipality extends Model
     {
         return $this->hasMany(\App\Models\School::class);
     }
+
+    public function user()
+    {
+        return $this->hasMany(\App\Models\User::class);
+    }
 }

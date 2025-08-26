@@ -5,7 +5,7 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body class="min-h-screen bg-neutral-50 dark:bg-zinc-800">
     <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
@@ -17,20 +17,28 @@
             <flux:navlist.group :heading="__('Platform')" class="grid">
                 <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                <flux:navlist.item icon="User" :href="route('register')" :current="request()->routeIs('register')"
-                    wire:navigate>{{ __('Users') }}</flux:navlist.item>
+                <flux:navlist.item icon="home" :href="route('vaccinetransactions')"
+                    :current="request()->routeIs('vaccinetransactions')" wire:navigate>{{ __('Vaccine Inventory') }}
+                </flux:navlist.item>
+
+                <flux:navlist.item icon="User" :href="route('usermanagement')"
+                    :current="request()->routeIs('usermanagement')" wire:navigate>{{ __('Users') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
         <flux:spacer />
 
         <flux:navlist variant="outline">
-            <flux:navlist.item icon="clipboard-document-list" :href="route('municipalities')"
-                :current="request()->routeIs('municipalities')" wire:navigate>{{ __('Municipality') }}
-            </flux:navlist.item>
-            <flux:navlist.item icon="clipboard-document-list" :href="route('schools')"
-                :current="request()->routeIs('schools')" wire:navigate>{{ __('Schools') }}</flux:navlist.item>
-
+            <flux:navlist.group :heading="__('Settings/Build-up')" class="grid">
+                <flux:navlist.item icon="wallet" :href="route('vaccines')" :current="request()->routeIs('vaccines')"
+                    wire:navigate>{{ __('Vaccines') }}</flux:navlist.item>
+                <flux:navlist.item icon="clipboard-document-list" :href="route('municipalities')"
+                    :current="request()->routeIs('municipalities')" wire:navigate>{{ __('Municipality') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="clipboard-document-list" :href="route('schools')"
+                    :current="request()->routeIs('schools')" wire:navigate>{{ __('Schools') }}</flux:navlist.item>
+            </flux:navlist.group>
         </flux:navlist>
 
         <!-- Desktop User Menu -->
@@ -60,7 +68,8 @@
                 <flux:menu.separator />
 
                 <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
+                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>
+                        {{ __('Settings') }}
                     </flux:menu.item>
                 </flux:menu.radio.group>
 
@@ -107,7 +116,8 @@
                 <flux:menu.separator />
 
                 <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
+                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>
+                        {{ __('Settings') }}
                     </flux:menu.item>
                 </flux:menu.radio.group>
 
@@ -127,7 +137,7 @@
 
 
     @fluxScripts
-
+    <x-toaster-hub />
 </body>
 
 </html>
